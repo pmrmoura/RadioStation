@@ -1,10 +1,11 @@
 import React from 'react';
-import styles from './RadioContainer.modules.css';
+import styles from './RadioContainer.module.css';
+import Radio from '../Radio/Radio'
 
 function RadioContainer() {
     return (
-        <div className={styles.error}>
-            oi
+        <div className={styles.container}>
+            <Radio />
         </div>
     )
 }
