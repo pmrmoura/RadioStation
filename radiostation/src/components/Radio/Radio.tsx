@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FunctionComponent, useContext, createContext  } from 'react';
+import React, { useState, FunctionComponent, useContext, createContext  } from 'react';
 import styles from './Radio.module.css';
 import backArrow from '../../assets/back-arrow.png'
 import switchIcon from '../../assets/switch.png'
@@ -27,18 +27,15 @@ const FetchClientContext = createContext<FetchClient>(new FetchClient());
 
 const Radio: FunctionComponent<Props> = (props) => {
     const [selectedRadio, setSelectedRadio] = useState("")
-    const [post, setPost] = useState<FetchState<Station>>({ state: "pending" });
+    const [station, setStation] = useState<FetchState<Station>>({ state: "pending" });
 
     const fetchClient = useContext(FetchClientContext);
 
-    console.log(fetchClient)
     // useEffect(() => {
     //     fetchClient.getStations()
     //       .then(value => setPost({ state: "resolved", value }))
     //       .catch(error => setPost({ state: "rejected", error }));
     //   }, [fetchClient]);
-
-      console.log(post)
 
     const stations = get()
 
