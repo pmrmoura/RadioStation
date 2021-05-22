@@ -1,15 +1,47 @@
-import React, { useState, FunctionComponent  } from 'react';
+import React, { useState, useEffect, FunctionComponent, useContext, createContext  } from 'react';
 import styles from './Radio.module.css';
 import backArrow from '../../assets/back-arrow.png'
 import switchIcon from '../../assets/switch.png'
 
 import RadioItem from '../RadioItem/RadioItem'
 
-interface Props {}
+import { get } from '../../services/api'
+
+import { FetchClient } from '../../services/api'
+
+interface Props {
+
+}
+
+type FetchState<T> = 
+  | { state: "pending"; }
+  | { state: "resolved"; value: T }
+  | { state: "rejected"; error: Error };
+
+interface Station {
+    name: string
+    frequency: number
+}
+
+const FetchClientContext = createContext<FetchClient>(new FetchClient());
 
 const Radio: FunctionComponent<Props> = (props) => {
     const [selectedRadio, setSelectedRadio] = useState("")
-    console.log(selectedRadio)
+    const [post, setPost] = useState<FetchState<Station>>({ state: "pending" });
+
+    const fetchClient = useContext(FetchClientContext);
+
+    console.log(fetchClient)
+    // useEffect(() => {
+    //     fetchClient.getStations()
+    //       .then(value => setPost({ state: "resolved", value }))
+    //       .catch(error => setPost({ state: "rejected", error }));
+    //   }, [fetchClient]);
+
+      console.log(post)
+
+    const stations = get()
+
     const setSelectedRadioState = (newSelectedRadio: string) => {
         setSelectedRadio(newSelectedRadio)
     }
@@ -21,9 +53,13 @@ const Radio: FunctionComponent<Props> = (props) => {
                 <img className={styles.switch} src={switchIcon}></img>
             </div>
             <div className={styles.content}>
-                <RadioItem onRadioClicked={setSelectedRadioState} />
-                <RadioItem onRadioClicked={setSelectedRadioState} />
-                <RadioItem onRadioClicked={setSelectedRadioState} />
+                {stations.map((station) => (
+                    <RadioItem 
+                        radioName={station.name}
+                        radioFrequency={station.frequency}
+                        onRadioClicked={setSelectedRadioState}
+                    />
+                ))}
             </div>
 
             <div className={styles.footer}>
